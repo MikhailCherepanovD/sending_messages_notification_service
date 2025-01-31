@@ -19,7 +19,13 @@ endif ()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(${PROJECT_NAME} main.cc)
+add_executable(${PROJECT_NAME} main.cc
+        src/DbChecker.cpp
+        src/DbChecker.h
+        src/RouteInfo.h
+        src/NotificationServiceRequester.cpp
+        src/NotificationServiceRequester.h
+)
 
 # ##############################################################################
 # If you include the drogon source code locally in your project, use this method
@@ -31,6 +37,8 @@ add_executable(${PROJECT_NAME} main.cc)
 find_package(Drogon CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon)
 
+find_package(fmt REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 # ##############################################################################
 
 if (CMAKE_CXX_STANDARD LESS 17)
