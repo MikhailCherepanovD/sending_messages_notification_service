@@ -39,6 +39,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon)
 
 find_package(fmt REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(RDKAFKA REQUIRED rdkafka++)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${RDKAFKA_LIBRARIES})
 # ##############################################################################
 
 if (CMAKE_CXX_STANDARD LESS 17)

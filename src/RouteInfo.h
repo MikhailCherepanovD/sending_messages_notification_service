@@ -25,4 +25,17 @@ struct RouteInfo{
                                  "ticketData = {}\n\n",usersId,userName,telegram,email,routeId,ticketData);
         return str;
     }
+    string toJsonString() {
+        string json = fmt::format(
+                "{{\n"
+                "  \"usersId\": \"{}\",\n"
+                "  \"userName\": \"{}\",\n"
+                "  \"telegram\": \"{}\",\n"
+                "  \"email\": \"{}\",\n"
+                "  \"routeId\": \"{}\",\n"
+                "  \"ticketData\": \"{}\"\n"
+                "}}",
+                usersId, userName, telegram, email, routeId, ticketData);
+        return json;
+    }
 };

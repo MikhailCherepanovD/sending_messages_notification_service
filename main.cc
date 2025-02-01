@@ -17,7 +17,6 @@ void doWork() {
     for(auto elem:vecRouteInfo){
         notificationServiceRequester.requestAndSendDataTicket(elem);
     }
-    cout<<"work work hard wprk work"<<endl;
 }
 
 
