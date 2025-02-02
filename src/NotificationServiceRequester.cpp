@@ -40,15 +40,16 @@ void NotificationServiceRequester::requestAndSendDataTicket(shared_ptr<RouteInfo
     });
 }
 void NotificationServiceRequester::sendMessage(shared_ptr<RouteInfo> routeInfo){
+    string sendingString = routeInfo->toJsonString();
     lock_guard<mutex> lock(mtxSendingMessage);
     RdKafka::ErrorCode resp = producer->produce(
             topic,
             RdKafka::Topic::PARTITION_UA, // Автоматический выбор партиции
             RdKafka::Producer::RK_MSG_COPY, //копирование сообщения (Kafka сама выделит память)
-            routeInfo->toString().data(), routeInfo->toString().size(),
+            sendingString.data(), sendingString.size(),
             nullptr, 0, 0, nullptr);
     if (resp != RdKafka::ERR_NO_ERROR) {
         std::cerr << "Error sending message kafka: " << RdKafka::err2str(resp) << std::endl;
     }
-    cout<<routeInfo->toJsonString()<<endl;
+    cout<<sendingString<<endl;
 }

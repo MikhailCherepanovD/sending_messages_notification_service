@@ -33,8 +33,8 @@ struct RouteInfo{
                 "  \"telegram\": \"{}\",\n"
                 "  \"email\": \"{}\",\n"
                 "  \"routeId\": \"{}\",\n"
-                "  \"ticketData\": \"{}\"\n"
-                "}}",
+                "  \"ticketData\": {}}"
+                "}",
                 usersId, userName, telegram, email, routeId, ticketData);
         return json;
     }
