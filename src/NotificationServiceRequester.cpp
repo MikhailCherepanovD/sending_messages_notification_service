@@ -1,12 +1,9 @@
 #include "NotificationServiceRequester.h"
-
-NotificationServiceRequester* NotificationServiceRequester::instance=nullptr;
-const string NotificationServiceRequester::NOTIFICATION_SERVER_HOST="http://localhost:8083";
-
-
 RdKafka::Producer* NotificationServiceRequester::createProducer(){
-    std::string brokers = "localhost:9092";
-    std::string errstr;
+    string host = (*configReader.getJsonValue())["kafka"]["host"].asString();
+    int port = (*configReader.getJsonValue())["kafka"]["port"].asInt();
+    string brokers = fmt::format("{}:{}",host,port);
+    string errstr;
     RdKafka::Conf *conf = RdKafka::Conf::create(RdKafka::Conf::CONF_GLOBAL); // Объект конфигурации kafka
     if (conf->set("bootstrap.servers", brokers, errstr) != RdKafka::Conf::CONF_OK) { // добавляем параметры конфигурации
         LOG_ERROR << "Error creating kafka configuration: " << errstr;

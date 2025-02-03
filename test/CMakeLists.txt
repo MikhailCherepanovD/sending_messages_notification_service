@@ -4,7 +4,7 @@ project(sending_message_service_test CXX)
 add_executable(${PROJECT_NAME} test_main.cc)
 
 # ##############################################################################
-# If you include the drogon source code locally in your project, use this method
+# If you inner_libraries the drogon source code locally in your project, use this method
 # to add drogon 
 # target_link_libraries(${PROJECT_NAME} PRIVATE drogon)
 #

@@ -1,5 +1,4 @@
 #include "DbChecker.h"
-DbChecker* DbChecker::instance=nullptr;
 string DbChecker::getVecStr(const vector<int>& vec){
     string ret;
     for(auto e:vec){

@@ -28,6 +28,17 @@
         "log_path": "./logs/", // Путь к файлам логов
         "logfile_base_name": "drogon_log", // Базовое имя лог-файлов
         "logfile_size_limit": 100000000 // Ограничение размера лог-файла (в байтах)
-    }
+    },
 
+    "kafka": {
+        "host": "localhost",
+        "port": 9092,
+        "topic": "my_topic1"
+    },
+
+    "notification_server": {
+        "host": "localhost",
+        "port": 8083
+    },
+    "interval_checking": 20
 }

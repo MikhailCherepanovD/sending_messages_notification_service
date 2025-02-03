@@ -25,10 +25,12 @@ add_executable(${PROJECT_NAME} main.cc
         src/RouteInfo.h
         src/NotificationServiceRequester.cpp
         src/NotificationServiceRequester.h
+        inner_libraries/Singleton.h
+        inner_libraries/ConfigReader.h
 )
 
 # ##############################################################################
-# If you include the drogon source code locally in your project, use this method
+# If you inner_libraries the drogon source code locally in your project, use this method
 # to add drogon 
 # add_subdirectory(drogon) 
 # target_link_libraries(${PROJECT_NAME} PRIVATE drogon)

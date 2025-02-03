@@ -4,6 +4,7 @@
 #include "iostream"
 #include "src/DbChecker.h"
 #include "src/NotificationServiceRequester.h"
+#include "inner_libraries/ConfigReader.h"
 using namespace std;
 using namespace drogon;
 using namespace drogon::orm;
@@ -21,7 +22,8 @@ void doWork() {
 
 
 int main() {
-    const int interval_checking = 10;
+    ConfigReader& configReader = ConfigReader::getInstance();
+    int interval_checking = (*configReader.getJsonValue())["interval_checking"].asInt();
     app().loadConfigFile("../config.json");
     trantor::EventLoop* loop = app().getLoop();
     function<void()> mainCircle;

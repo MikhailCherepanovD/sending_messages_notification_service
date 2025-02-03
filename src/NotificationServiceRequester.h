@@ -6,46 +6,35 @@
 #include <drogon/HttpClient.h>
 #include <drogon/HttpController.h>
 #include <librdkafka/rdkafkacpp.h>
+#include "inner_libraries/Singleton.h"
+#include "inner_libraries/ConfigReader.h"
 #include "RouteInfo.h"
 using namespace std;
 using namespace drogon;
 using namespace drogon::orm;
-class NotificationServiceRequester{
+
+class NotificationServiceRequester:public Singleton<NotificationServiceRequester>{
 private:
-    NotificationServiceRequester()    {
-        LOG_DEBUG<<"Create singleton object NotificationServiceRequester";
-        producer = createProducer();
-    }
-    ~NotificationServiceRequester(){
-        //producer->flush(100); // Ожидание доставки сообщений
-        LOG_DEBUG<<"Delete singleton object NotificationServiceRequester";
-        delete producer;
-    }
-    static NotificationServiceRequester* instance;
-    class MemGuard{
-    public:
-        MemGuard(){
-        }
-        ~MemGuard(){
-            delete instance;
-            instance=nullptr;
-        }
-    };
-    static const string NOTIFICATION_SERVER_HOST;
+    ConfigReader& configReader;
+    string NOTIFICATION_SERVER_HOST;
     mutex mtxSendingMessage;
-    string topic = "my_topic1";
+    string topic;
     RdKafka::Producer* producer;
-    static RdKafka::Producer* createProducer();
+    RdKafka::Producer* createProducer();
     void sendMessage(shared_ptr<RouteInfo> routeInfo);
 public:
-    NotificationServiceRequester(const NotificationServiceRequester&) = delete;
-    NotificationServiceRequester& operator=(const NotificationServiceRequester&) = delete;
-    static NotificationServiceRequester& getInstance(){
-        static MemGuard g;
-        if (!instance) {
-            instance = new NotificationServiceRequester();
-        }
-        return *instance;
+    NotificationServiceRequester()
+    :configReader(ConfigReader::getInstance()){
+        LOG_DEBUG<<"Create singleton object NotificationServiceRequester";
+        topic = (*configReader.getJsonValue())["kafka"]["topic"].asString();
+        producer = createProducer();
+        NOTIFICATION_SERVER_HOST = fmt::format("http://{}:{}",
+                                               (*configReader.getJsonValue())["notification_server"]["host"].asString(),
+                                               (*configReader.getJsonValue())["notification_server"]["port"].asInt());
+    }
+    ~NotificationServiceRequester(){
+        LOG_DEBUG<<"Delete singleton object NotificationServiceRequester";
+        delete producer;
     }
     void requestAndSendDataTicket(shared_ptr<RouteInfo> routeInfo);
 };
